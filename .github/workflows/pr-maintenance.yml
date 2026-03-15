@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: PR maintenance
+
+on:
+  pull_request:
+    branches: [ "master" ]
+    types: [ "opened", "synchronize", "reopened" ]
+
+jobs:
+  Checks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v6
+      - run: npm ci
+      - run: npm run-script full-check
+        env:
+          TEST_BOT_TOKEN: ${{ secrets.TEST_BOT_TOKEN }}
+          TEST_CHAT_ID: ${{ secrets.TEST_CHAT_ID }}
+          TEST_BOT_USERNAME: ${{ secrets.TEST_BOT_USERNAME }}
+
+  Assign to maintainers:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Assign PR to maintainers
+        uses: kentaro-m/auto-assign-action@v1.2.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: 'HRAshton'
+
+      - name: Assign to Copilot (if not from dependabot)
+        if: github.actor != 'dependabot[bot]'
+        uses: peter-evans/assign-pull-request@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: 'github-actions[bot]'
+
+  Enable auto-merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable auto-merge for dependabot PRs
+        uses: "pascalgn/automerge-action@v0.16.4"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_METHOD: "squash"
+          MERGE_LABELS: "minor"
