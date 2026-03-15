@@ -8,7 +8,8 @@ on:
     types: [ "opened", "synchronize", "reopened" ]
 
 jobs:
-  Checks:
+  checks:
+    name: Checks
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -22,7 +23,8 @@ jobs:
           TEST_CHAT_ID: ${{ secrets.TEST_CHAT_ID }}
           TEST_BOT_USERNAME: ${{ secrets.TEST_BOT_USERNAME }}
 
-  Assign to maintainers:
+  assign-to-maintainers:
+    name: Assign to maintainers
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     permissions:
@@ -30,19 +32,18 @@ jobs:
       pull-requests: write
     steps:
       - name: Assign PR to maintainers
-        uses: kentaro-m/auto-assign-action@v1.2.0
+        uses: hkusu/review-assign-action@v1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: 'HRAshton'
+          reviewers: 'maintainers'
 
       - name: Assign to Copilot (if not from dependabot)
         if: github.actor != 'dependabot[bot]'
-        uses: peter-evans/assign-pull-request@v1
+        uses: hkusu/review-assign-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: 'github-actions[bot]'
+          reviewers: 'github-copilot[bot]'
 
-  Enable auto-merge:
+  enable-auto-merge:
+    name: Enable auto-merge for dependabot PRs
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     permissions:
@@ -54,4 +55,4 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_METHOD: "squash"
-          MERGE_LABELS: "minor"
+          MERGE_LABELS: "!major"

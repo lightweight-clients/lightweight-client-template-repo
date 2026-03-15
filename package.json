@@ -1,6 +1,6 @@
 {
-  "name": "lightweight-client-template-internal-use-only",
-  "version": "0.0.0",
+  "name": "@lightweight-clients/lightweight-client-playground",
+  "version": "1.0.4",
   "description": "TODO DESCRIPTION",
   "source": "src/index.ts",
   "main": "dist/index.js",
