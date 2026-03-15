@@ -38,13 +38,13 @@
   "type": "module",
   "author": "lightweight-clients (https://github.com/lightweight-clients)",
   "license": "MIT",
-  "homepage": "https://github.com/lightweight-clients/lightweight-client-template",
+  "homepage": "https://github.com/lightweight-clients/lightweight-client-template-repo",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lightweight-clients/lightweight-client-template"
+    "url": "https://github.com/lightweight-clients/lightweight-client-template-repo"
   },
   "bugs": {
-    "url": "https://github.com/lightweight-clients/lightweight-client-template/issues"
+    "url": "https://github.com/lightweight-clients/lightweight-client-template-repo/issues"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
