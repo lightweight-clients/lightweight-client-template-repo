@@ -31,19 +31,21 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - uses: actions/checkout@v6
+
       - name: Assign PR to maintainers
         uses: hkusu/review-assign-action@v1
         with:
           reviewers: 'maintainers,github-copilot[bot]'
 
+      - if: github.actor == 'dependabot[bot]' || github.event.pull_request.user.login == 'dependabot[bot]' # TODO
+        run: gh pr merge ${{ github.event.pull_request.number }} --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   enable-auto-merge:
     name: Enable auto-merge for dependabot PRs
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.event.pull_request.user.login == 'dependabot[bot]' # TODO
     permissions:
       contents: write
       pull-requests: write
     steps:
-       - run: gh pr merge ${{ github.event.pull_request.number }} --auto --squash
-         env:
-           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
