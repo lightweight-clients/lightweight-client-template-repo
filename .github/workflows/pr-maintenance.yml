@@ -24,7 +24,7 @@ jobs:
           TEST_BOT_USERNAME: ${{ secrets.TEST_BOT_USERNAME }}
 
   assign-to-maintainers:
-    name: Assign to maintainers
+    name: Assign to maintainers (except for dependabot PRs)
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
     permissions:
@@ -34,25 +34,14 @@ jobs:
       - name: Assign PR to maintainers
         uses: hkusu/review-assign-action@v1
         with:
-          reviewers: 'maintainers'
-
-      - name: Assign to Copilot (if not from dependabot)
-        if: github.actor != 'dependabot[bot]'
-        uses: hkusu/review-assign-action@v1
-        with:
-          reviewers: 'github-copilot[bot]'
+          reviewers: 'maintainers,github-copilot[bot]'
 
   enable-auto-merge:
     name: Enable auto-merge for dependabot PRs
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]' || github.event.pull_request.user.login == 'dependabot[bot]' # TODO
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - name: Enable auto-merge for dependabot PRs
-        uses: "pascalgn/automerge-action@v0.16.4"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_METHOD: "squash"
-          MERGE_LABELS: "!major"
+       - run: gh pr merge ${{ github.event.pull_request.number }} --auto --squash
