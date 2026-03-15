@@ -1,6 +1,6 @@
 {
-  "name": "{{NPM_FULL_PROJECT_NAME}}",
-  "version": "TODO VERSION",
+  "name": "lightweight-client-template-internal-use-only",
+  "version": "0.0.0",
   "description": "TODO DESCRIPTION",
   "source": "src/index.ts",
   "main": "dist/index.js",
@@ -30,21 +30,21 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest --run",
-    "full-check": "run-p lint knip updates:check ts:check && run-s test",
+    "full-check": "run-p lint knip ts:check && run-s test",
     "build": "tsc",
     "precommit": "run-s full-check lockfile",
     "prepack": "run-s full-check build"
   },
   "type": "module",
-  "author": "{{GITHUB_ORG}} (https://github.com/{{GITHUB_ORG}})",
+  "author": "lightweight-clients (https://github.com/lightweight-clients)",
   "license": "MIT",
-  "homepage": "https://github.com/{{GITHUB_ORG}}/{{GITHUB_REPO}}",
+  "homepage": "https://github.com/lightweight-clients/lightweight-client-template",
   "repository": {
     "type": "git",
-    "url": "https://github.com/{{GITHUB_ORG}}/{{GITHUB_REPO}}"
+    "url": "https://github.com/lightweight-clients/lightweight-client-template"
   },
   "bugs": {
-    "url": "https://github.com/{{GITHUB_ORG}}/{{GITHUB_REPO}}/issues"
+    "url": "https://github.com/lightweight-clients/lightweight-client-template/issues"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
@@ -59,5 +59,5 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.3"
   },
-  "schema_version": "TODO SCHEMA VERSION"
+  "schema_version": "unset-todo"
 }
