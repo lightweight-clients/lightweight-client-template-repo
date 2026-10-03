@@ -127,7 +127,9 @@ jobs:
       - name: Update the client
         working-directory: ./client
         run: |
-          cp -r ../generator/output/* ./src/
+          rm -rf ./src
+          mkdir ./src
+          cp -R ../generator/output/. ./src/
           bash ../generator/workflow-scripts/update-changelog-and-npm.sh \
             ${{ needs.compare-versions.outputs.api_version }}.0
           jq '.schema_version = "'"${{ needs.compare-versions.outputs.schema_version }}"'"' package.json \
