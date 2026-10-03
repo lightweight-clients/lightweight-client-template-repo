@@ -90,11 +90,34 @@ jobs:
           )
           PY
 
+      - name: Install generator dependencies
+        working-directory: ./generator
+        run: |
+          set -euo pipefail
+
+          if [[ -f pnpm-lock.yaml ]]; then
+            package_manager=$(node -p "require('./package.json').packageManager || ''")
+            if [[ "$package_manager" != pnpm@* ]]; then
+              echo "pnpm generators must pin packageManager in package.json" >&2
+              exit 1
+            fi
+            corepack enable
+            pnpm install --frozen-lockfile
+          elif [[ -f package-lock.json ]]; then
+            npm ci
+          else
+            echo "Generator must commit pnpm-lock.yaml or package-lock.json" >&2
+            exit 1
+          fi
+
       - name: Run the generator
         working-directory: ./generator
         run: |
-          npm install
-          npm start
+          if [[ -f pnpm-lock.yaml ]]; then
+            pnpm start
+          else
+            npm start
+          fi
 
       - name: Checkout the client repository
         uses: actions/checkout@v3
