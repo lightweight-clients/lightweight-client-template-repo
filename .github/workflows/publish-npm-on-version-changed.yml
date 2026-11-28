@@ -14,8 +14,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 26
           registry-url: 'https://registry.npmjs.org'
@@ -23,4 +23,4 @@ jobs:
         run: npm install -g npm@latest
       - run: npm ci
       - run: npm run prepack
-      - uses: JS-DevTools/npm-publish@v4
+      - uses: JS-DevTools/npm-publish@0fd2f4369c5d6bcfcde6091a7c527d810b9b5c3f # v4

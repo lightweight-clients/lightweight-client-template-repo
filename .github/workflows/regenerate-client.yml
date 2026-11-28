@@ -41,7 +41,7 @@ jobs:
         ${{ steps.fetch-client-schema-version.outputs.schema_version == steps.fetch-registry-schema-version.outputs.schema_version }}
     steps:
       - name: Checkout the package.json file
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           sparse-checkout: 'package.json'
 
@@ -65,7 +65,7 @@ jobs:
     if: ${{ needs.compare-versions.outputs.up_to_date != 'true' || inputs.force_update }}
     steps:
       - name: Checkout the generator repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: '{{GITHUB_ORG}}/${{ env.package_name }}-generator'
           path: generator
@@ -97,7 +97,7 @@ jobs:
           npm start
 
       - name: Checkout the client repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: client
 
@@ -136,7 +136,7 @@ jobs:
           fi
 
       - name: Create Pull Request with current (uncommitted) changes
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
         with:
           path: ./client
           commit-message: "feat: Support API v${{ needs.compare-versions.outputs.api_version }}"
